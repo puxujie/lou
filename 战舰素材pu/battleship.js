@@ -1,3 +1,10 @@
+var mask =document.getElementById('close')
+var img = document.getElementsByTagName('img')[0];
+mask.onclick=function() {
+  img.style.display='none';
+  this.style.display='none';
+}
+
 var view = {
   displayMessage:function(msg) {
     var messageArea = document.getElementById('messageArea');
@@ -21,12 +28,12 @@ var model = {
   shipsSunk: 0,
   ships: [{ locations: ['0', '0', '0'], hits: ["","",""] },
           { locations: ['0', '0', '0'], hits: ["","",""] },
-          { locations: ['0', '0', '0'], hits: ["","",""] }],
+          { locations: ['0', '0', '0'], hits: ["","",""] }, ],
 fire: function(guess) {
   for (var i = 0 ; i<this.numShips; i++) {
       var ship = this.ships[i];
       var index =ship.locations.indexOf(guess);
-      if (index >=0) {
+      if (index >= 0) {
         ship.hits[index] = 'hit';
         view.displayHit(guess);
         view.displayMessage('hit!');
@@ -47,23 +54,27 @@ isSunk: function(ship) {
   for (var i = 0; i < this.shipLength;i++) {
     if (ship.hits[i] === "hit") {
       count++
-    } 
-    console.log(count)
-    if ( ) {
-    
+      for (var j= 0;j< this.shipLength ;j++ ) {
+        if (count===1 ) {
+        view.displayHit(ship.locations[j]);
+        var firstboom=document.getElementById(event.target.id)
+        firstboom.style.backgroundImage ='url(boom.png)'
+        document.getElementById(ship.locations[j]).style.backgroundColor='green';
+        } else if(count===2) {
+        view.displayHit(ship.locations[j])
+        document.getElementById(ship.locations[j]).style.backgroundImage = 'url(boom.png)'
+        var tdchangcolor = document.getElementById(event.target.id)
+        tdchangcolor.style.backgroundImage = 'url(boom.png)'
+        }
+      }
     }
   }
-  return true;
+  console.log(count)
+  if (count > this.shipLength * 0.66 ) {
+    return true;
+  }
+  return false;
 },
-
-// isSunk: function(ship) {
-//     for (var i = 0; i<this.shipLength;i++) {
-//       if (ship.hits[i] !== "hit") {
-//        return false;
-//       }
-//     }
-//     return true;
-// },
 
 generateShipLocations: function() {
   var locations;
@@ -132,6 +143,7 @@ var controller = {
     var location = event.target.id;
     if (location) {
       controller.guesses++;
+      console.log(location)
       var hit = model.fire(location);
       if (hit && model.shipsSunk === model.numShips) {
         view.displayMessage('You sank all my battleships, in'+controller.guesses + 'guesses')
@@ -148,10 +160,12 @@ function init() {
   shubiaodianji[i].onclick =controller.processGuess;
   }
   console.log(model.ships)
-  var guessInput =document.getElementById('guessInput');
+
+  var guessInput = document.getElementById('guessInput');
   guessInput.onkeypress = handleKeypress;
   model.generateShipLocations()
 }
+
 function handleKeypress(e) {
   var fireButton =document.getElementById('fireButton');
   if (e.keyCode === 13) {
@@ -168,4 +182,5 @@ function handleFireButton() {
   controller.processGuess(guess);
   guessInput.value="";
 }
+
 window.onload=init;

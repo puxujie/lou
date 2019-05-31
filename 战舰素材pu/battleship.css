@@ -43,3 +43,17 @@ form input {
 .miss {
   background: url("miss.png") no-repeat center center;
 }
+
+.img{
+  position: fixed;
+  z-index:10;
+  top: 50%;
+  left: 25%;
+  margin-top: -200px;
+  margin-bottom: -200px;
+}
+#close {
+  position: absolute;
+  left: 705px;
+  top: 5px;
+}
